@@ -4,6 +4,8 @@ import { UpdateKilometers } from './components/UpdateKilometers';
 import { SettingsDialog } from './components/SettingsDialog';
 import { HistoryList } from './components/HistoryList';
 import { AddMaintenanceDialog } from './components/AddMaintenanceDialog';
+import { ThemeToggle } from './components/ThemeToggle';
+import { SplashCursor } from './components/SplashCursor';
 import { Car, Plus } from 'lucide-react';
 import { Button } from './components/ui/button';
 
@@ -56,16 +58,21 @@ const defaultData: VehicleData = {
 export default function App() {
   const [vehicleData, setVehicleData] = useState<VehicleData>(defaultData);
   const [history, setHistory] = useState<ChangeHistory[]>([]);
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
   useEffect(() => {
     const savedData = localStorage.getItem('vehicleData');
     const savedHistory = localStorage.getItem('changeHistory');
+    const savedTheme = localStorage.getItem('darkMode');
     
     if (savedData) {
       setVehicleData(JSON.parse(savedData));
     }
     if (savedHistory) {
       setHistory(JSON.parse(savedHistory));
+    }
+    if (savedTheme) {
+      setIsDarkMode(JSON.parse(savedTheme));
     }
   }, []);
 
@@ -76,6 +83,15 @@ export default function App() {
   useEffect(() => {
     localStorage.setItem('changeHistory', JSON.stringify(history));
   }, [history]);
+
+  useEffect(() => {
+    localStorage.setItem('darkMode', JSON.stringify(isDarkMode));
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [isDarkMode]);
 
   const handleUpdateKilometers = (newKm: number) => {
     setVehicleData(prev => ({ ...prev, currentKm: newKm }));
@@ -152,9 +168,15 @@ export default function App() {
     }));
   };
 
+  const toggleTheme = () => {
+    setIsDarkMode(prev => !prev);
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
-      <div className="container mx-auto px-4 py-6 max-w-7xl">
+    <>
+      <SplashCursor />
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 transition-colors">
+        <div className="container mx-auto px-4 py-6 max-w-7xl">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-3">
@@ -162,11 +184,12 @@ export default function App() {
               <Car className="w-8 h-8 text-white" />
             </div>
             <div>
-              <h1 className="text-slate-900">Control de Mantenimiento</h1>
-              <p className="text-slate-600">Gestión de servicios del vehículo</p>
+              <h1 className="text-slate-900 dark:text-white">Control de Mantenimiento</h1>
+              <p className="text-slate-600 dark:text-slate-400">Gestión de servicios del vehículo</p>
             </div>
           </div>
           <div className="flex gap-2">
+            <ThemeToggle isDark={isDarkMode} onToggle={toggleTheme} />
             <AddMaintenanceDialog onAdd={handleAddMaintenance} />
             <SettingsDialog 
               maintenanceTypes={vehicleData.maintenanceTypes}
@@ -185,6 +208,7 @@ export default function App() {
               maintenanceTypes={vehicleData.maintenanceTypes}
               onMaintenanceChange={handleMaintenanceChange}
               onMultipleChange={handleMultipleChange}
+              onUpdateKm={handleUpdateKilometers}
             />
           </div>
 
@@ -197,7 +221,8 @@ export default function App() {
             <HistoryList history={history} />
           </div>
         </div>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

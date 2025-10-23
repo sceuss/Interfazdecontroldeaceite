@@ -36,14 +36,14 @@ export function UpdateKilometers({ currentKm, onUpdate }: UpdateKilometersProps)
   };
 
   return (
-    <Card className="p-6 shadow-lg border-slate-200">
+    <Card className="p-6 shadow-lg border-slate-200 dark:border-slate-700 dark:bg-slate-800">
       <div className="flex items-center gap-3 mb-6">
-        <div className="bg-blue-100 p-2 rounded-lg">
-          <Gauge className="w-5 h-5 text-blue-600" />
+        <div className="bg-blue-100 dark:bg-blue-900/30 p-2 rounded-lg">
+          <Gauge className="w-5 h-5 text-blue-600 dark:text-blue-400" />
         </div>
         <div>
-          <h3 className="text-slate-900">Actualizar Kilometraje</h3>
-          <p className="text-slate-600">Registro de recorrido</p>
+          <h3 className="text-slate-900 dark:text-white">Actualizar Kilometraje</h3>
+          <p className="text-slate-600 dark:text-slate-400">Registro de recorrido</p>
         </div>
       </div>
 
@@ -68,14 +68,14 @@ export function UpdateKilometers({ currentKm, onUpdate }: UpdateKilometersProps)
           Actualizar
         </Button>
 
-        <div className="pt-4 border-t border-slate-200">
-          <p className="text-slate-600 mb-3">Acciones rápidas</p>
+        <div className="pt-4 border-t border-slate-200 dark:border-slate-700">
+          <p className="text-slate-600 dark:text-slate-400 mb-3">Acciones rápidas</p>
           <div className="grid grid-cols-3 gap-2">
             <Button 
               variant="outline" 
               size="sm"
               onClick={() => addQuickKm(100)}
-              className="text-slate-700"
+              className="text-slate-700 dark:text-slate-300"
             >
               +100
             </Button>
@@ -83,7 +83,7 @@ export function UpdateKilometers({ currentKm, onUpdate }: UpdateKilometersProps)
               variant="outline" 
               size="sm"
               onClick={() => addQuickKm(500)}
-              className="text-slate-700"
+              className="text-slate-700 dark:text-slate-300"
             >
               +500
             </Button>
@@ -91,7 +91,7 @@ export function UpdateKilometers({ currentKm, onUpdate }: UpdateKilometersProps)
               variant="outline" 
               size="sm"
               onClick={() => addQuickKm(1000)}
-              className="text-slate-700"
+              className="text-slate-700 dark:text-slate-300"
             >
               +1000
             </Button>
